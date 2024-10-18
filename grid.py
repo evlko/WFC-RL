@@ -10,6 +10,13 @@ class Grid:
         self.patterns = patterns
         self.grid = np.full((width, height), None)
         self.entropy = np.full((width, height), len(patterns))
+    
+    @staticmethod
+    def weighted_choice(possible_patterns):
+        """Select a pattern based on weights."""
+        weights = np.array([p.weight for p in possible_patterns])
+        probabilities = weights / np.sum(weights)
+        return np.random.choice(possible_patterns, p=probabilities)
 
     def initialize(self):
         """Initialize or reset the grid with full entropy in all cells."""
@@ -59,7 +66,7 @@ class Grid:
         if not possible_patterns:
             return False
 
-        chosen_pattern = np.random.choice(possible_patterns)
+        chosen_pattern = self.weighted_choice(possible_patterns)
         self.grid[x, y] = chosen_pattern
         self.entropy[x, y] = 0
         return True

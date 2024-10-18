@@ -16,8 +16,8 @@ class Renderer:
                 pattern = grid.grid[x, y]
                 if pattern:
                     img = mpimg.imread(pattern.image_path)
-                    ax[y, x].imshow(img)  
-                ax[y, x].axis("on") 
+                    ax[y, x].imshow(img)
+                ax[y, x].axis("on")
 
         plt.subplots_adjust(wspace=0, hspace=0)
         plt.show()
