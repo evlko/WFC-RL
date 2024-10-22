@@ -19,11 +19,15 @@
         ],
         "left": [
           "Ground",
-          "Wall Right"
+          "Wall Ground",
+          "Wall Right",
+          18
         ],
         "right": [
           "Ground",
-          "Wall Left"
+          "Wall Ground",
+          "Wall Left",
+          16
         ]
       }
     },
@@ -46,11 +50,15 @@
         ],
         "left": [
           "Ground",
-          "Wall Right"
+          "Wall Ground",
+          "Wall Right",
+          18
         ],
         "right": [
           "Ground",
-          "Wall Left"
+          "Wall Ground",
+          "Wall Left",
+          16
         ]
       }
     },
@@ -63,12 +71,12 @@
       ],
       "weight": 1,
       "rules": {
-        "up": [],
+        "up": [7],
         "down": [
           "Wall Ground"
         ],
         "left": [
-          "Ground"
+          "Ground", "Wall Ground"
         ],
         "right": [
           "Wall Center",
@@ -84,9 +92,11 @@
         "Wall",
         "Wall Center"
       ],
-      "weight": 5,
+      "weight": 1,
       "rules": {
-        "up": [8],
+        "up": [
+          8
+        ],
         "down": [
           "Wall Ground"
         ],
@@ -110,7 +120,9 @@
       ],
       "weight": 1,
       "rules": {
-        "up": [8],
+        "up": [
+          8
+        ],
         "down": [
           "Wall Ground"
         ],
@@ -119,7 +131,7 @@
           3
         ],
         "right": [
-          "Wall Cener",
+          "Wall Center",
           6
         ]
       }
@@ -133,7 +145,7 @@
       ],
       "weight": 1,
       "rules": {
-        "up": [],
+        "up": [9],
         "down": [
           "Wall Ground"
         ],
@@ -156,7 +168,7 @@
       "weight": 1,
       "rules": {
         "up": [
-          "Wall Left"
+          "Wall Left", 16
         ],
         "down": [
           3
@@ -180,7 +192,7 @@
       "weight": 1,
       "rules": {
         "up": [
-          "Wall Inside"
+          "Wall Inside", 17
         ],
         "down": [
           "Wall Center"
@@ -205,7 +217,7 @@
       "weight": 1,
       "rules": {
         "up": [
-          "Wall Right"
+          "Wall Right", 18
         ],
         "down": [
           6
@@ -229,7 +241,8 @@
       "weight": 1,
       "rules": {
         "up": [
-          "Wall Left"
+          "Wall Left",
+          16
         ],
         "down": [
           7
@@ -253,7 +266,8 @@
       "weight": 1,
       "rules": {
         "up": [
-          "Wall Right"
+          "Wall Right",
+          18
         ],
         "down": [
           9
@@ -274,7 +288,7 @@
       "tags": [
         "Wall Ground"
       ],
-      "weight": 3,
+      "weight": 1,
       "rules": {
         "up": [
           "Wall"
@@ -285,12 +299,14 @@
         "left": [
           "Ground",
           "Wall Right",
-          "Wall Ground"
+          "Wall Ground",
+          18
         ],
         "right": [
           "Ground",
           "Wall Left",
-          "Wall Ground"
+          "Wall Ground",
+          16
         ]
       }
     },
@@ -312,26 +328,29 @@
         "left": [
           "Ground",
           "Wall Right",
-          "Wall Ground"
+          "Wall Ground",
+          18
         ],
         "right": [
           "Ground",
           "Wall Left",
-          "Wall Ground"
+          "Wall Ground",
+          16
         ]
       }
     },
     {
       "id": 14,
       "image_path": "images/tile_0000.png",
-      "name": "Wall Inside 1",
+      "name": "Wall Inside",
       "tags": [
         "Wall Inside"
       ],
-      "weight": 3,
+      "weight": 1,
       "rules": {
         "up": [
-          "Wall Inside"
+          "Wall Inside",
+          17
         ],
         "down": [
           "Wall Inside",
@@ -350,14 +369,15 @@
     {
       "id": 15,
       "image_path": "images/tile_0012.png",
-      "name": "Wall Inside 1",
+      "name": "Wall Inside with Stone",
       "tags": [
         "Wall Inside"
       ],
-      "weight": 3,
+      "weight": 1,
       "rules": {
         "up": [
-          "Wall Inside"
+          "Wall Inside",
+          17
         ],
         "down": [
           "Wall Inside",
@@ -370,6 +390,82 @@
         "right": [
           "Wall Inside",
           "Wall Right"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "image_path": "images/tile_0004.png",
+      "name": "Wall Left Top",
+      "tags": [
+        "Wall Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Ground"
+        ],
+        "down": [
+          7,
+          10
+        ],
+        "left": [
+          "Ground"
+        ],
+        "right": [
+          17,
+          18
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "image_path": "images/tile_0026.png",
+      "name": "Wall Center Top",
+      "tags": [
+        "Wall Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Ground"
+        ],
+        "down": [
+          "Wall Inside",
+          8
+        ],
+        "left": [
+          16,
+          17
+        ],
+        "right": [
+          17,
+          18
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "image_path": "images/tile_0005.png",
+      "name": "Wall Right Top",
+      "tags": [
+        "Wall Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Ground"
+        ],
+        "down": [
+          11,
+          9
+        ],
+        "left": [
+          16,
+          17
+        ],
+        "right": [
+          "Ground"
         ]
       }
     }
