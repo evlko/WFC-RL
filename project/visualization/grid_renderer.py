@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
-from project.wfc.grid import Grid
 from project.visualization.renderer import Renderer
+from project.wfc.grid import Grid
 
 
 class GridRenderer(Renderer):

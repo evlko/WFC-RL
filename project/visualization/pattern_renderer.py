@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 
-from project.wfc.pattern import Pattern
 from project.visualization.renderer import Renderer
+from project.wfc.pattern import Pattern
 
 
 class PatternRenderer(Renderer):
-    def draw(self, pattern: Pattern) -> None:
-        """Draw the pattern with rules."""
+    def draw(self, pattern: Pattern, title: str = None) -> None:
+        """Draw the pattern with its neighboring rules using a dynamic grid layout."""
         up_neighbors, right_neighbors, down_neighbors, left_neighbors = (
             pattern.rules.get_allowed_neighbors()
         )
@@ -20,6 +20,9 @@ class PatternRenderer(Renderer):
         fig, ax = plt.subplots(
             grid_height, grid_width, figsize=(grid_width, grid_height)
         )
+
+        if title:
+            fig.suptitle(title)
 
         center_pos = (max_vertical, max_horizontal)
         self.load_image(pattern.image_path, ax, center_pos)
