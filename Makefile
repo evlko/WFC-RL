@@ -1,0 +1,3 @@
+pretty:
+	black .
+	isort .

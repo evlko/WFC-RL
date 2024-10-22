@@ -1,6 +1,6 @@
 import numpy as np
 
-from direction import Direction
+from project.wfc.direction import Direction
 
 
 class Grid:
@@ -8,9 +8,7 @@ class Grid:
         self.width = width
         self.height = height
         self.patterns = patterns
-        self.grid = np.full((width, height), None)
-        self.entropy = np.full((width, height), len(patterns))
-    
+
     @staticmethod
     def weighted_choice(possible_patterns):
         """Select a pattern based on weights."""
@@ -20,8 +18,8 @@ class Grid:
 
     def initialize(self):
         """Initialize or reset the grid with full entropy in all cells."""
-        self.grid = np.full((self.width, self.height), None)
-        self.entropy = np.full((self.width, self.height), len(self.patterns))
+        self.grid = np.full((self.height, self.width), None)
+        self.entropy = np.full((self.height, self.width), len(self.patterns))
 
     def find_least_entropy_cell(self):
         """Find the cell with the lowest entropy. If multiple, choose closest to center."""
@@ -36,13 +34,13 @@ class Grid:
         """Get neighbors and their directions for the cell (x, y)."""
         neighbors = []
         if x > 0:
-            neighbors.append((x - 1, y, Direction.LEFT))
-        if x < self.width - 1:
-            neighbors.append((x + 1, y, Direction.RIGHT))
+            neighbors.append((x - 1, y, Direction.RIGHT))
+        if x < self.height - 1:
+            neighbors.append((x + 1, y, Direction.LEFT))
         if y > 0:
-            neighbors.append((x, y - 1, Direction.UP))
-        if y < self.height - 1:
-            neighbors.append((x, y + 1, Direction.DOWN))
+            neighbors.append((x, y - 1, Direction.DOWN))
+        if y < self.width - 1:
+            neighbors.append((x, y + 1, Direction.UP))
         return neighbors
 
     def get_valid_patterns(self, x, y):

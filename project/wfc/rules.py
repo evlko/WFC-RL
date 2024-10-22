@@ -1,4 +1,4 @@
-from direction import Direction
+from project.wfc.direction import Direction
 
 
 class NeighborRuleSet:
@@ -12,5 +12,12 @@ class NeighborRuleSet:
             Direction.RIGHT: allowed_right or set(),
         }
 
-    def get_allowed_neighbors(self, direction):
+    def get_allowed_neighbors(self, direction=None):
+        if direction == None:
+            return (
+                self.allowed_neighbors[Direction.UP],
+                self.allowed_neighbors[Direction.RIGHT],
+                self.allowed_neighbors[Direction.DOWN],
+                self.allowed_neighbors[Direction.LEFT],
+            )
         return self.allowed_neighbors[direction]
