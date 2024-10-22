@@ -1,5 +1,6 @@
 import numpy as np
 
+from project.utils.utils import Utils
 from project.wfc.direction import Direction
 
 
@@ -8,13 +9,6 @@ class Grid:
         self.width = width
         self.height = height
         self.patterns = patterns
-
-    @staticmethod
-    def weighted_choice(possible_patterns):
-        """Select a pattern based on weights."""
-        weights = np.array([p.weight for p in possible_patterns])
-        probabilities = weights / np.sum(weights)
-        return np.random.choice(possible_patterns, p=probabilities)
 
     def initialize(self):
         """Initialize or reset the grid with full entropy in all cells."""
@@ -33,14 +27,14 @@ class Grid:
     def get_neighbors(self, x, y):
         """Get neighbors and their directions for the cell (x, y)."""
         neighbors = []
-        if x > 0:
-            neighbors.append((x - 1, y, Direction.RIGHT))
+        if x > 0: 
+            neighbors.append((x - 1, y, Direction.DOWN)) 
         if x < self.height - 1:
-            neighbors.append((x + 1, y, Direction.LEFT))
-        if y > 0:
-            neighbors.append((x, y - 1, Direction.DOWN))
-        if y < self.width - 1:
-            neighbors.append((x, y + 1, Direction.UP))
+            neighbors.append((x + 1, y, Direction.UP)) 
+        if y > 0: 
+            neighbors.append((x, y - 1, Direction.RIGHT)) 
+        if y < self.width - 1: 
+            neighbors.append((x, y + 1, Direction.LEFT)) 
         return neighbors
 
     def get_valid_patterns(self, x, y):
@@ -50,7 +44,7 @@ class Grid:
         for nx, ny, direction in self.get_neighbors(x, y):
             neighbor_pattern = self.grid[nx, ny]
             if neighbor_pattern is not None:
-                allowed_patterns = neighbor_pattern.rule_set.get_allowed_neighbors(
+                allowed_patterns = neighbor_pattern.rules.get_allowed_neighbors(
                     direction
                 )
                 possible_patterns = possible_patterns.intersection(allowed_patterns)
@@ -64,7 +58,7 @@ class Grid:
         if not possible_patterns:
             return False
 
-        chosen_pattern = self.weighted_choice(possible_patterns)
+        chosen_pattern = Utils.weighted_choice(possible_patterns)
         self.grid[x, y] = chosen_pattern
         self.entropy[x, y] = 0
         return True
