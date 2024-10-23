@@ -1,14 +1,16 @@
 import matplotlib.pyplot as plt
 
 from project.visualization.renderer import Renderer
-from project.wfc.pattern import Pattern
+from project.wfc.pattern import MetaPattern
 
 
 class PatternRenderer(Renderer):
-    def draw(self, pattern: Pattern, title: str = None) -> None:
+    def draw(
+        self, meta_pattern: MetaPattern, pattern_idx: int = 0, title: str = None
+    ) -> None:
         """Draw the pattern with its neighboring rules using a dynamic grid layout."""
         up_neighbors, right_neighbors, down_neighbors, left_neighbors = (
-            pattern.rules.get_allowed_neighbors()
+            meta_pattern.rules.get_allowed_neighbors()
         )
 
         max_horizontal = max(len(left_neighbors), len(right_neighbors), 1)
@@ -25,30 +27,38 @@ class PatternRenderer(Renderer):
             fig.suptitle(title)
 
         center_pos = (max_vertical, max_horizontal)
-        self.load_image(pattern.image_path, ax, center_pos)
+        self.load_image(meta_pattern.patterns[pattern_idx].image_path, ax, center_pos)
 
         if up_neighbors:
             for i, neighbor in enumerate(up_neighbors):
                 self.load_image(
-                    neighbor.image_path, ax, (max_vertical - 1 - i, max_horizontal)
+                    neighbor.patterns[0].image_path,
+                    ax,
+                    (max_vertical - 1 - i, max_horizontal),
                 )
 
         if down_neighbors:
             for i, neighbor in enumerate(down_neighbors):
                 self.load_image(
-                    neighbor.image_path, ax, (max_vertical + 1 + i, max_horizontal)
+                    neighbor.patterns[0].image_path,
+                    ax,
+                    (max_vertical + 1 + i, max_horizontal),
                 )
 
         if left_neighbors:
             for i, neighbor in enumerate(left_neighbors):
                 self.load_image(
-                    neighbor.image_path, ax, (max_vertical, max_horizontal - 1 - i)
+                    neighbor.patterns[0].image_path,
+                    ax,
+                    (max_vertical, max_horizontal - 1 - i),
                 )
 
         if right_neighbors:
             for i, neighbor in enumerate(right_neighbors):
                 self.load_image(
-                    neighbor.image_path, ax, (max_vertical, max_horizontal + 1 + i)
+                    neighbor.patterns[0].image_path,
+                    ax,
+                    (max_vertical, max_horizontal + 1 + i),
                 )
 
         for i in range(grid_height):

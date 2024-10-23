@@ -6,3 +6,11 @@ class Direction(Enum):
     DOWN = auto()
     LEFT = auto()
     RIGHT = auto()
+
+
+reverse_directions = {
+    Direction.DOWN: Direction.UP,
+    Direction.UP: Direction.DOWN,
+    Direction.LEFT: Direction.RIGHT,
+    Direction.RIGHT: Direction.LEFT,
+}

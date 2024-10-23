@@ -14,8 +14,9 @@ class Renderer(ABC):
         axis: bool = False,
     ) -> None:
         """Load an image and display it in the given axis grid position."""
-        img = mpimg.imread(image_path)
-        ax[grid_pos].imshow(img)
+        if image_path:
+            img = mpimg.imread(image_path)
+            ax[grid_pos].imshow(img)
 
         if not axis:
             ax[grid_pos].axis("off")

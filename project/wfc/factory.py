@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from project.wfc.pattern import Pattern
+from project.wfc.pattern import MetaPattern, Pattern
 from project.wfc.repository import repository
 from project.wfc.rules import NeighborRuleSet
 
@@ -14,24 +14,29 @@ class Factory:
     def create_patterns(self):
         """Creates patterns and rules from JSON data"""
         patterns_data = {p["id"]: p for p in self.data}
-        patterns = [
-            Pattern(
+        meta_patterns = [
+            MetaPattern(
                 uid=pattern_data["id"],
-                image_path=pattern_data["image_path"],
                 name=pattern_data["name"],
                 tags=set(pattern_data["tags"]),
                 weight=pattern_data["weight"],
+                patterns=[
+                    Pattern(image_path=pattern["image_path"], weight=pattern["weight"])
+                    for pattern in pattern_data.get("patterns", [])
+                ],
             )
             for pattern_data in self.data
         ]
 
-        repository.register_patterns(patterns)
+        repository.register_patterns(meta_patterns)
 
-        for pattern in patterns:
+        for pattern in meta_patterns:
             rules = self.create_rules(patterns_data[pattern.uid]["rules"])
             pattern.rules = rules
 
-        return patterns
+        print(repository.validate_patterns())
+
+        return meta_patterns
 
     def create_rules(self, rules) -> NeighborRuleSet:
         """Create a NeighborRuleSet based on the JSON rules"""
