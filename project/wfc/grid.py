@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
@@ -11,14 +11,14 @@ class Grid:
         self.width = width
         self.height = height
         self.patterns = patterns
-        self.grid = np.full((self.height, self.width), None)
+        self.initialize()
 
-    def initialize(self):
+    def initialize(self) -> None:
         """Initialize or reset the grid with full entropy in all cells."""
         self.grid = np.full((self.height, self.width), None)
         self.entropy = np.full((self.height, self.width), len(self.patterns))
 
-    def find_least_entropy_cell(self):
+    def find_least_entropy_cell(self) -> Tuple[int, int]:
         """Find the cell with the lowest entropy. If multiple, choose closest to center."""
         min_entropy = np.min(self.entropy[self.entropy > 0])
         candidates = np.argwhere(self.entropy == min_entropy)
@@ -27,7 +27,7 @@ class Grid:
         closest_index = np.argmin(distances)
         return tuple(candidates[closest_index])
 
-    def get_neighbors(self, x, y):
+    def get_neighbors(self, x: int, y: int) -> List[MetaPattern]:
         """Get neighbors and their directions for the cell (x, y)."""
         neighbors = []
         if x > 0:
@@ -40,7 +40,7 @@ class Grid:
             neighbors.append((x, y + 1, Direction.LEFT))
         return neighbors
 
-    def get_valid_patterns(self, x, y):
+    def get_valid_patterns(self, x: int, y: int) -> List[MetaPattern]:
         """Get all valid patterns for the cell (x, y) based on neighbors' constraints."""
         possible_patterns = set(self.patterns)
 
