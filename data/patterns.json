@@ -6,7 +6,7 @@
       "tags": [
         "Ground"
       ],
-      "weight": 3,
+      "weight": 4,
       "rules": {
         "up": [
           "Ground",
@@ -36,7 +36,7 @@
       "patterns": [
         {
           "image_path": "images/tile_0048.png",
-          "weight": 8
+          "weight": 10
         },
         {
           "image_path": "images/tile_0049.png",
@@ -119,6 +119,22 @@
         },
         {
           "image_path": "images/tile_0028.png",
+          "weight": 1
+        },
+        {
+          "image_path": "images/tile_0019.png",
+          "weight": 1
+        },
+        {
+          "image_path": "images/tile_0045.png",
+          "weight": 1
+        },
+        {
+          "image_path": "images/tile_0007.png",
+          "weight": 1
+        },
+        {
+          "image_path": "images/tile_0020.png",
           "weight": 1
         }
       ]
