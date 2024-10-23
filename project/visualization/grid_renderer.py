@@ -30,7 +30,9 @@ class GridRenderer(Renderer):
                 meta_pattern = grid.grid[x, y]
                 image = None
                 if meta_pattern:
-                    custom_seed = (lambda s: s + x + y if s else None)(seed)
+                    custom_seed = (lambda s: s + x * 100 + y + y**2 if s else None)(
+                        seed
+                    )
                     pattern = Utils.weighted_choice(
                         meta_pattern.patterns, seed=custom_seed
                     )
