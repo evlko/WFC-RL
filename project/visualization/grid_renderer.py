@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+from project.utils.utils import Utils
 from project.visualization.renderer import Renderer
 from project.wfc.grid import Grid
 
@@ -7,7 +8,13 @@ from project.wfc.grid import Grid
 class GridRenderer(Renderer):
     offset = 0.15
 
-    def draw(self, grid: Grid, title: str = None, show_borders: bool = False) -> None:
+    def draw(
+        self,
+        grid: Grid,
+        title: str = None,
+        show_borders: bool = False,
+        seed: int | None = 42,
+    ) -> None:
         """Draw the grid using images for the patterns."""
         fig, ax = plt.subplots(
             grid.height,
@@ -20,9 +27,15 @@ class GridRenderer(Renderer):
 
         for x in range(grid.width):
             for y in range(grid.height):
-                pattern = grid.grid[x, y]
-                if pattern:
-                    self.load_image(pattern.image_path, ax, (x, y), show_borders)
+                meta_pattern = grid.grid[x, y]
+                image = None
+                if meta_pattern:
+                    custom_seed = (lambda s: s + x + y if s else None)(seed)
+                    pattern = Utils.weighted_choice(
+                        meta_pattern.patterns, seed=custom_seed
+                    )
+                    image = pattern.image_path
+                self.load_image(image, ax, (x, y), show_borders)
 
         plt.subplots_adjust(
             left=self.offset,

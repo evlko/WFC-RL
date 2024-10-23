@@ -1,14 +1,17 @@
+from typing import List
+
 import numpy as np
 
-from project.utils.utils import Utils
 from project.wfc.direction import Direction
+from project.wfc.pattern import MetaPattern
 
 
 class Grid:
-    def __init__(self, width, height, patterns):
+    def __init__(self, width: int, height: int, patterns: List[MetaPattern]):
         self.width = width
         self.height = height
         self.patterns = patterns
+        self.grid = np.full((self.height, self.width), None)
 
     def initialize(self):
         """Initialize or reset the grid with full entropy in all cells."""
@@ -27,14 +30,14 @@ class Grid:
     def get_neighbors(self, x, y):
         """Get neighbors and their directions for the cell (x, y)."""
         neighbors = []
-        if x > 0: 
-            neighbors.append((x - 1, y, Direction.DOWN)) 
+        if x > 0:
+            neighbors.append((x - 1, y, Direction.DOWN))
         if x < self.height - 1:
-            neighbors.append((x + 1, y, Direction.UP)) 
-        if y > 0: 
-            neighbors.append((x, y - 1, Direction.RIGHT)) 
-        if y < self.width - 1: 
-            neighbors.append((x, y + 1, Direction.LEFT)) 
+            neighbors.append((x + 1, y, Direction.UP))
+        if y > 0:
+            neighbors.append((x, y - 1, Direction.RIGHT))
+        if y < self.width - 1:
+            neighbors.append((x, y + 1, Direction.LEFT))
         return neighbors
 
     def get_valid_patterns(self, x, y):
@@ -51,50 +54,33 @@ class Grid:
 
         return list(possible_patterns)
 
-    def collapse(self, x, y):
-        """Collapse the wave function at (x, y) by choosing a valid pattern."""
-        possible_patterns = self.get_valid_patterns(x, y)
-
-        if not possible_patterns:
-            return False
-
-        chosen_pattern = Utils.weighted_choice(possible_patterns)
-        self.grid[x, y] = chosen_pattern
+    def place_pattern(self, x: int, y: int, pattern: MetaPattern) -> None:
+        """Place a pattern in the grid at the specified position."""
+        self.grid[x, y] = pattern
         self.entropy[x, y] = 0
-        return True
 
-    def update_neighbors_entropy(self, x, y):
+    def update_neighbors_entropy(self, x: int, y: int) -> bool:
         """Recalculate the entropy of neighboring cells after placing a pattern."""
         for nx, ny, _ in self.get_neighbors(x, y):
             if self.grid[nx, ny] is None:
                 possible_patterns = self.get_valid_patterns(nx, ny)
+                entropy = len(possible_patterns)
                 self.entropy[nx, ny] = len(possible_patterns)
+                if entropy == 0:
+                    return True
+        return False
 
-    def step(self):
-        """Perform one step in the WFC process: find, collapse, and update neighbors."""
-        cell = self.find_least_entropy_cell()
-        if cell is None:
-            return False
-
-        x, y = cell
-        success = self.collapse(x, y)
-        if not success:
-            print(f"Generation failed at cell ({x}, {y}).")
-            return False
-
-        self.update_neighbors_entropy(x, y)
-        return True
-
-    def generate(self):
-        """Run the generation process until the grid is fully collapsed or fails."""
-        self.initialize()
-        while not self.is_collapsed():
-            if not self.step():
-                print("Generation failed.")
-                return False
-        print("Generation succeeded!")
-        return True
-
-    def is_collapsed(self):
+    def is_collapsed(self) -> bool:
         """Check if the entire grid has been filled."""
         return np.all(self.grid != None)
+
+    def __str__(self) -> str:
+        """Custom string representation of the grid showing uids or 'None'."""
+        grid_str = ""
+        for row in self.grid:
+            row_str = []
+            for cell in row:
+                cell_str = (lambda c: str(c.uid) if c else "None")(cell)
+                row_str.append(cell_str)
+            grid_str += " | ".join(row_str) + "\n"
+        return grid_str
