@@ -1,1 +1,1 @@
-DATA_SOURCE = "data/patterns.json"
+DATA_SOURCE = "data/patterns_forest.json"

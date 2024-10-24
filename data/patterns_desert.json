@@ -1,0 +1,689 @@
+{
+  "images_folder": "images/desert/",
+  "patterns": [
+    {
+      "id": 1,
+      "name": "Empty Ground",
+      "tags": [
+        "Ground"
+      ],
+      "weight": 7,
+      "rules": {
+        "up": [
+          "Ground",
+          "Wall Ground"
+        ],
+        "down": [
+          "Ground",
+          "Wall Top"
+        ],
+        "left": [
+          "Ground",
+          "Wall Ground",
+          "Wall Right",
+          18,
+          6,
+          9
+        ],
+        "right": [
+          "Ground",
+          "Wall Ground",
+          "Wall Left",
+          16,
+          3,
+          7
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0048.png",
+          "weight": 13
+        },
+        {
+          "image_path": "tile_0049.png",
+          "weight": 2
+        },
+        {
+          "image_path": "tile_0042.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Left Wall Bottom End",
+      "tags": [
+        "Wall"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          7
+        ],
+        "down": [
+          "Wall Ground"
+        ],
+        "left": [
+          "Ground",
+          "Wall Ground"
+        ],
+        "right": [
+          "Wall Center",
+          6,
+          "Wall Left",
+          7
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0057.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Wall Center",
+      "tags": [
+        "Wall",
+        "Wall Center"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          8
+        ],
+        "down": [
+          "Wall Ground"
+        ],
+        "left": [
+          "Wall Center",
+          3,
+          "Wall Right",
+          9
+        ],
+        "right": [
+          "Wall Center",
+          6,
+          "Wall Left",
+          7
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0014.png",
+          "weight": 20
+        },
+        {
+          "image_path": "tile_0040.png",
+          "weight": 5
+        },
+        {
+          "image_path": "tile_0028.png",
+          "weight": 1
+        },
+        {
+          "image_path": "tile_0019.png",
+          "weight": 1
+        },
+        {
+          "image_path": "tile_0045.png",
+          "weight": 1
+        },
+        {
+          "image_path": "tile_0007.png",
+          "weight": 1
+        },
+        {
+          "image_path": "tile_0029.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Right Wall Bottom End",
+      "tags": [
+        "Wall"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          9
+        ],
+        "down": [
+          "Wall Ground"
+        ],
+        "left": [
+          "Wall Center",
+          "Wall Right",
+          3,
+          9
+        ],
+        "right": [
+          "Ground",
+          "Wall Ground"
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0059.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Left Wall Top End",
+      "tags": [
+        "Wall Bottom Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Left",
+          16,
+          20
+        ],
+        "down": [
+          3
+        ],
+        "left": [
+          "Ground",
+          "Wall Ground",
+          3,
+          4
+        ],
+        "right": [
+          8,
+          9,
+          20
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0016.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Center Wall Top End",
+      "tags": [
+        "Wall Bottom Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Inside",
+          17,
+          22,
+          21
+        ],
+        "down": [
+          "Wall Center"
+        ],
+        "left": [
+          7,
+          8,
+          19
+        ],
+        "right": [
+          8,
+          9,
+          20
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0002.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Right Wall Top End",
+      "tags": [
+        "Wall Bottom Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Right",
+          18,
+          19
+        ],
+        "down": [
+          6
+        ],
+        "left": [
+          7,
+          8,
+          19
+        ],
+        "right": [
+          "Ground",
+          "Wall Ground",
+          4,
+          6
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0017.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Left Wall",
+      "tags": [
+        "Wall Left"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Left",
+          16,
+          20
+        ],
+        "down": [
+          "Wall Left",
+          7,
+          21
+        ],
+        "left": [
+          "Ground",
+          "Wall Ground",
+          4,
+          3
+        ],
+        "right": [
+          "Wall Inside",
+          "Wall Right",
+          19,
+          22
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0015.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Right Wall",
+      "tags": [
+        "Wall Right"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Right",
+          18,
+          19
+        ],
+        "down": [
+          "Wall Right",
+          9,
+          22
+        ],
+        "left": [
+          "Wall Inside",
+          "Wall Left",
+          20,
+          21
+        ],
+        "right": [
+          "Ground",
+          "Wall Ground",
+          4,
+          6
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0013.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "image_path": "tile_0050.png",
+      "name": "Wall Ground",
+      "tags": [
+        "Wall Ground"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall"
+        ],
+        "down": [
+          "Ground",
+          "Wall Top"
+        ],
+        "left": [
+          "Ground",
+          "Wall Right",
+          "Wall Ground",
+          18,
+          6,
+          9
+        ],
+        "right": [
+          "Ground",
+          "Wall Left",
+          "Wall Ground",
+          16,
+          3,
+          7
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0050.png",
+          "weight": 3
+        },
+        {
+          "image_path": "tile_0051.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Wall Inside",
+      "tags": [
+        "Wall Inside"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Inside",
+          17,
+          21,
+          22
+        ],
+        "down": [
+          "Wall Inside",
+          8,
+          19,
+          20
+        ],
+        "left": [
+          "Wall Inside",
+          "Wall Left",
+          20,
+          21
+        ],
+        "right": [
+          "Wall Inside",
+          "Wall Right",
+          19,
+          22
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0000.png",
+          "weight": 8
+        },
+        {
+          "image_path": "tile_0012.png",
+          "weight": 1
+        },
+        {
+          "image_path": "tile_0024.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Wall Left Top",
+      "tags": [
+        "Wall Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Ground",
+          "Wall Ground"
+        ],
+        "down": [
+          7,
+          10,
+          21
+        ],
+        "left": [
+          "Ground",
+          "Wall Ground"
+        ],
+        "right": [
+          17,
+          18,
+          21
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0004.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Wall Center Top",
+      "tags": [
+        "Wall Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Ground",
+          "Wall Ground"
+        ],
+        "down": [
+          "Wall Inside",
+          8,
+          19,
+          20
+        ],
+        "left": [
+          16,
+          17,
+          22
+        ],
+        "right": [
+          17,
+          18,
+          21
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0026.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Wall Right Top",
+      "tags": [
+        "Wall Top"
+      ],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Ground",
+          "Wall Ground"
+        ],
+        "down": [
+          11,
+          9,
+          22
+        ],
+        "left": [
+          16,
+          17,
+          22
+        ],
+        "right": [
+          "Ground",
+          "Wall Ground"
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0005.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Wall Bottom Right Corner",
+      "tags": [],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Inside",
+          17,
+          21,
+          22
+        ],
+        "down": [
+          "Wall Right",
+          9
+        ],
+        "left": [
+          "Wall Left",
+          "Wall Inside",
+          20,
+          21
+        ],
+        "right": [
+          8,
+          9
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0001.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Wall Bottom Left Corner",
+      "tags": [],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Inside",
+          17,
+          21,
+          22
+        ],
+        "down": [
+          "Wall Left",
+          7
+        ],
+        "left": [
+          8,
+          7
+        ],
+        "right": [
+          "Wall Inside",
+          19,
+          "Wall Right",
+          22
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0003.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Wall Top Left Corner",
+      "tags": [],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Left",
+          16
+        ],
+        "down": [
+          "Wall Inside",
+          19,
+          20,
+          8
+        ],
+        "left": [
+          16,
+          17
+        ],
+        "right": [
+          "Wall Inside",
+          22,
+          19,
+          "Wall Right"
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0027.png",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Wall Top Right Corner",
+      "tags": [],
+      "weight": 1,
+      "rules": {
+        "up": [
+          "Wall Right",
+          18
+        ],
+        "down": [
+          "Wall Inside",
+          19,
+          20,
+          8
+        ],
+        "left": [
+          "Wall Inside",
+          21,
+          20,
+          "Wall Left"
+        ],
+        "right": [
+          18,
+          17
+        ]
+      },
+      "patterns": [
+        {
+          "image_path": "tile_0025.png",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}
