@@ -36,6 +36,8 @@ class Logger:
         plt.ylabel("Tries")
         plt.title("Log of Size vs Tries")
 
+        plt.ylim(bottom=1)
+
         plt.grid(True)
         plt.legend()
 
