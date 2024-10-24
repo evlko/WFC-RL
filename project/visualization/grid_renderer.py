@@ -25,8 +25,8 @@ class GridRenderer(Renderer):
         if title:
             fig.suptitle(title)
 
-        for x in range(grid.width):
-            for y in range(grid.height):
+        for x in range(grid.height):
+            for y in range(grid.width):
                 meta_pattern = grid.grid[x, y]
                 image = None
                 if meta_pattern:
