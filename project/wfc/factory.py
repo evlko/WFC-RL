@@ -9,7 +9,9 @@ from project.wfc.rules import NeighborRuleSet
 class Factory:
     def __init__(self, json_path: str):
         with open(json_path, "r") as f:
-            self.data = json.load(f)["patterns"]
+            data = json.load(f)
+            self.images_folder = data["images_folder"]
+            self.data = data["patterns"]
 
     def create_patterns(self):
         """Creates patterns and rules from JSON data"""
@@ -21,7 +23,10 @@ class Factory:
                 tags=set(pattern_data["tags"]),
                 weight=pattern_data["weight"],
                 patterns=[
-                    Pattern(image_path=pattern["image_path"], weight=pattern["weight"])
+                    Pattern(
+                        image_path=f"{self.images_folder}{pattern["image_path"]}",
+                        weight=pattern["weight"],
+                    )
                     for pattern in pattern_data.get("patterns", [])
                 ],
             )
