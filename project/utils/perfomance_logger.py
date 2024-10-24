@@ -9,7 +9,7 @@ class LogPoint:
     tries: int
 
 
-class Logger:
+class PerformanceLogger:
     def __init__(self) -> None:
         self.log_points = []
 
@@ -34,7 +34,7 @@ class Logger:
 
         plt.xlabel("Size")
         plt.ylabel("Tries")
-        plt.title("Log of Size vs Tries")
+        plt.title("Size vs Tries")
 
         plt.ylim(bottom=1)
 

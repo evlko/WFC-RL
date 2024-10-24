@@ -1,8 +1,9 @@
 import json
 from typing import List
 
+from project.logger import logger
 from project.wfc.pattern import MetaPattern, Pattern
-from project.wfc.repository import repository
+from project.wfc.repository import ValidationResult, repository
 from project.wfc.rules import NeighborRuleSet
 
 
@@ -39,7 +40,11 @@ class Factory:
             rules = self.create_rules(patterns_data[pattern.uid]["rules"])
             pattern.rules = rules
 
-        print(repository.validate_patterns())
+        validation = repository.validate_patterns()
+        if validation.result == ValidationResult.SUCCESS:
+            logger.info("Pattern validation succeeded.")
+        else:
+            logger.error(f"Pattern validation failed with errors: {validation.error}")
 
         return meta_patterns
 
