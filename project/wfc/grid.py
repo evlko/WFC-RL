@@ -29,10 +29,10 @@ class Grid:
         self, p: Point, view_width: int = 3, view_height: int = 3
     ) -> List[Optional[MetaPattern]]:
         """Get patterns within a rectangular region around a specified point (x, y)."""
-        x_min = max(0, p.x - view_width // 2)
-        x_max = min(self.width, p.x + view_width // 2 + 1)
-        y_min = max(0, p.y - view_height // 2)
-        y_max = min(self.height, p.y + view_height // 2 + 1)
+        x_min = max(0, p.x - view_height // 2)
+        x_max = min(self.height, p.x + view_height // 2 + 1)
+        y_min = max(0, p.y - view_width // 2)
+        y_max = min(self.width, p.y + view_width // 2 + 1)
 
         return self.grid[y_min:y_max, x_min:x_max]
 
