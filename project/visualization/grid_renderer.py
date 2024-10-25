@@ -55,9 +55,7 @@ class GridRenderer(Renderer):
             plt.show()
         if filename:
             plt.savefig(
-                f"{config.IMAGES_PATH}{filename}.png",
-                bbox_inches="tight",
-                pad_inches=0
+                f"{config.IMAGES_PATH}{filename}.png", bbox_inches="tight", pad_inches=0
             )
         plt.close()
 
