@@ -18,7 +18,7 @@ class WFC:
             self.initialize()
 
         point = self.grid.find_least_entropy_cell()
-        if point is None:
+        if point is None and early_stopping:
             return False
 
         possible_patterns = self.grid.get_valid_patterns(point)
@@ -29,7 +29,6 @@ class WFC:
         self.grid.place_pattern(point, chosen_pattern)
 
         is_zero_entropy = self.grid.update_neighbors_entropy(point)
-
         if is_zero_entropy and early_stopping:
             return False
 
