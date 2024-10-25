@@ -12,7 +12,7 @@ class WFC:
         self.grid.initialize()
         self._is_initialized = True
 
-    def step(self) -> bool:
+    def step(self, early_stopping: bool = True) -> bool:
         """Perform one step in the WFC process: find, collapse, and update neighbors."""
         if not self._is_initialized:
             self.initialize()
@@ -23,15 +23,15 @@ class WFC:
 
         x, y = cell
         possible_patterns = self.grid.get_valid_patterns(x, y)
-        if not possible_patterns:
+        if not possible_patterns and early_stopping:
             return False
 
         chosen_pattern = Utils.weighted_choice(possible_patterns)
         self.grid.place_pattern(x, y, chosen_pattern)
 
-        is_early_stopping = self.grid.update_neighbors_entropy(x, y)
+        is_zero_entropy = self.grid.update_neighbors_entropy(x, y)
 
-        if is_early_stopping:
+        if is_zero_entropy and early_stopping:
             return False
 
         return True
