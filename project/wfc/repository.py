@@ -82,7 +82,8 @@ class Repository:
 
         return result
 
-    def handle_text_rule(self, rule: str):
+    def handle_text_rule(self, rule: str) -> List[MetaPattern]:
+        """Handle text rule: use special rule of just a tag."""
         if rule in SpecialRule:
             return self.get_patterns_by_special_rule(rule=rule)
         return self.get_patterns_by_tag(tag=rule)
