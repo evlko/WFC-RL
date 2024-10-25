@@ -42,9 +42,9 @@ class Factory:
 
         validation = repository.validate_patterns()
         if validation.result == ValidationResult.SUCCESS:
-            logger.info("Pattern validation succeeded.")
+            logger.info(validation)
         else:
-            logger.error(f"Pattern validation failed with errors: {validation.error}")
+            logger.error(validation)
 
         return meta_patterns
 
