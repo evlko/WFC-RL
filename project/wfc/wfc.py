@@ -17,19 +17,18 @@ class WFC:
         if not self._is_initialized:
             self.initialize()
 
-        cell = self.grid.find_least_entropy_cell()
-        if cell is None:
+        point = self.grid.find_least_entropy_cell()
+        if point is None:
             return False
 
-        x, y = cell
-        possible_patterns = self.grid.get_valid_patterns(x, y)
+        possible_patterns = self.grid.get_valid_patterns(point)
         if not possible_patterns and early_stopping:
             return False
 
         chosen_pattern = Utils.weighted_choice(possible_patterns)
-        self.grid.place_pattern(x, y, chosen_pattern)
+        self.grid.place_pattern(point, chosen_pattern)
 
-        is_zero_entropy = self.grid.update_neighbors_entropy(x, y)
+        is_zero_entropy = self.grid.update_neighbors_entropy(point)
 
         if is_zero_entropy and early_stopping:
             return False
