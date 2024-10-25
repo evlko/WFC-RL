@@ -22,7 +22,7 @@ class Grid:
         """Find the cell with the lowest entropy. If multiple, choose closest to center."""
         min_entropy = np.min(self.entropy[self.entropy > 0])
         candidates = np.argwhere(self.entropy == min_entropy)
-        center = np.array([self.width // 2, self.height // 2])
+        center = np.array([self.height // 2, self.width // 2])
         distances = np.linalg.norm(candidates - center, axis=1)
         closest_index = np.argmin(distances)
         return tuple(candidates[closest_index])
