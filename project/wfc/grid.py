@@ -42,9 +42,12 @@ class Grid:
 
         return self.grid[y_min:y_max, x_min:x_max]
 
-    def find_least_entropy_cell(self) -> Point:
+    def find_least_entropy_cell(self) -> Point | None:
         """Find the cell with the lowest entropy. If multiple, choose closest to center."""
-        min_entropy = np.min(self.entropy[self.entropy > 0])
+        candidates = self.entropy[self.entropy > 0]
+        if len(candidates) == 0:
+            return None
+        min_entropy = np.min(candidates)
         candidates = np.argwhere(self.entropy == min_entropy)
         center = np.array([self.height // 2, self.width // 2])
         distances = np.linalg.norm(candidates - center, axis=1)
