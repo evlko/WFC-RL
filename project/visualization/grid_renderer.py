@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+from project import config
 from project.utils.utils import Utils
 from project.visualization.renderer import Renderer
 from project.wfc.grid import Grid
@@ -14,6 +15,8 @@ class GridRenderer(Renderer):
         title: str = None,
         show_borders: bool = False,
         seed: int | None = 42,
+        show: bool = True,
+        filename: str | None = None,
     ) -> None:
         """Draw the grid using images for the patterns."""
         fig, ax = plt.subplots(
@@ -47,7 +50,16 @@ class GridRenderer(Renderer):
             hspace=0,
             wspace=0,
         )
-        plt.show()
+
+        if show:
+            plt.show()
+        if filename:
+            plt.savefig(
+                f"{config.IMAGES_PATH}{filename}.png",
+                bbox_inches="tight",
+                pad_inches=0
+            )
+        plt.close()
 
 
 grid_renderer = GridRenderer()
