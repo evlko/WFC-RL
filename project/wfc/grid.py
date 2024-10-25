@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import numpy as np
 
@@ -13,10 +13,16 @@ class Point:
     y: int
 
 
+@dataclass
+class Rect:
+    width: int
+    height: int
+
+
 class Grid:
-    def __init__(self, width: int, height: int, patterns: List[MetaPattern]):
-        self.width = width
-        self.height = height
+    def __init__(self, rect: Rect, patterns: List[MetaPattern]):
+        self.width = rect.width
+        self.height = rect.height
         self.patterns = patterns
         self.initialize()
 
@@ -26,13 +32,13 @@ class Grid:
         self.entropy = np.full((self.height, self.width), len(self.patterns))
 
     def get_patterns_around_point(
-        self, p: Point, view_width: int = 3, view_height: int = 3
+        self, p: Point, view: Rect = Rect(width=3, height=3)
     ) -> List[Optional[MetaPattern]]:
         """Get patterns within a rectangular region around a specified point (x, y)."""
-        x_min = max(0, p.x - view_height // 2)
-        x_max = min(self.height, p.x + view_height // 2 + 1)
-        y_min = max(0, p.y - view_width // 2)
-        y_max = min(self.width, p.y + view_width // 2 + 1)
+        x_min = max(0, p.x - view.height // 2)
+        x_max = min(self.height, p.x + view.height // 2 + 1)
+        y_min = max(0, p.y - view.width // 2)
+        y_max = min(self.width, p.y + view.width // 2 + 1)
 
         return self.grid[y_min:y_max, x_min:x_max]
 
