@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from project import config
 from project.utils.utils import Utils
 from project.visualization.renderer import Renderer
-from project.wfc.grid import Grid
+from project.wfc.grid import Grid, Point
 
 
 class GridRenderer(Renderer):
@@ -17,6 +17,7 @@ class GridRenderer(Renderer):
         seed: int | None = 42,
         show: bool = True,
         filename: str | None = None,
+        show_entropy_on_empty: bool = True,
     ) -> None:
         """Draw the grid using images for the patterns."""
         fig, ax = plt.subplots(
@@ -31,6 +32,9 @@ class GridRenderer(Renderer):
         for x in range(grid.height):
             for y in range(grid.width):
                 meta_pattern = grid.grid[x, y]
+                cell_entropy = None
+                if show_entropy_on_empty:
+                    cell_entropy = grid.entropy[x, y]
                 image = None
                 if meta_pattern:
                     custom_seed = (lambda s: s + x * 100 + y + y**2 if s else None)(
@@ -40,7 +44,13 @@ class GridRenderer(Renderer):
                         meta_pattern.patterns, seed=custom_seed
                     )
                     image = pattern.image_path
-                self.load_image(image, ax, (x, y), show_borders)
+                self.render_cell(
+                    image_path=image,
+                    text=cell_entropy,
+                    ax=ax,
+                    p=Point(x, y),
+                    axis=show_borders,
+                )
 
         plt.subplots_adjust(
             left=self.offset,
