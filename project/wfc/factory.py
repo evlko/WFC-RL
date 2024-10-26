@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import Dict, List, Union
 
 from project.logger import logger
 from project.wfc.pattern import MetaPattern, Pattern
@@ -8,13 +8,13 @@ from project.wfc.rules import NeighborRuleSet
 
 
 class Factory:
-    def __init__(self, json_path: str):
+    def __init__(self, json_path: str) -> None:
         with open(json_path, "r") as f:
             data = json.load(f)
             self.images_folder = data["images_folder"]
             self.data = data["patterns"]
 
-    def create_patterns(self):
+    def create_patterns(self) -> List[MetaPattern]:
         """Creates patterns and rules from JSON data"""
         patterns_data = {p["id"]: p for p in self.data}
         meta_patterns = [
@@ -48,16 +48,16 @@ class Factory:
 
         return meta_patterns
 
-    def create_rules(self, rules) -> NeighborRuleSet:
+    def create_rules(self, rules: Dict[str, List[Union[str, int]]]) -> NeighborRuleSet:
         """Create a NeighborRuleSet based on the JSON rules"""
 
-        def rules_handler(options: List[str | int]):
+        def rules_handler(options: List[Union[str, int]]):
             results = []
             for op in options:
                 if isinstance(op, str):
-                    results += repository.handle_text_rule(op)
+                    results.extend(repository.handle_text_rule(op))
                 else:
-                    results += [repository.get_pattern_by_uid(op)]
+                    results.append(repository.get_pattern_by_uid(op))
             return results
 
         return NeighborRuleSet(
