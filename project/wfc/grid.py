@@ -104,17 +104,17 @@ class Grid:
         self.grid[p.x, p.y] = pattern
         self.entropy[p.x, p.y] = 0
 
-    def update_neighbors_entropy(self, p: Point) -> bool:
+    def update_neighbors_entropy(self, p: Point) -> Point | None:
         """Recalculate the entropy of neighboring cells after placing a pattern."""
-        for nx, ny, _ in self.get_neighbors(p):
-            if self.grid[nx, ny] is None:
-                np = Point(x=nx, y=ny)
+        for x, y, _ in self.get_neighbors(p):
+            np = Point(x=x, y=y)
+            if self.grid[np.x, np.y] is None:
                 possible_patterns = self.get_valid_patterns(np)
                 entropy = len(possible_patterns)
-                self.entropy[nx, ny] = len(possible_patterns)
+                self.entropy[np.x, np.y] = len(possible_patterns)
                 if entropy == 0:
-                    return True
-        return False
+                    return np
+        return None
 
     def is_collapsed(self) -> bool:
         """Check if the entire grid has been filled."""
