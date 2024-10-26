@@ -2,7 +2,6 @@ import os
 from dataclasses import dataclass, field
 from typing import List, Set, Union
 
-from project.wfc.rules import NeighborRuleSet
 from project.wfc.wobj import WeightedObject
 
 
@@ -16,5 +15,5 @@ class MetaPattern(WeightedObject):
     uid: int
     name: str
     tags: Set[str] = field(compare=False, hash=False)
-    rules: Union["NeighborRuleSet", None] = field(default=None, repr=False)
+    rules: Union["NeighborRuleSet", None] = field(default=None, repr=False)  # type: ignore
     patterns: List[Pattern] = field(default_factory=list, repr=False, hash=False)

@@ -1,23 +1,29 @@
+from dataclasses import dataclass, field
+from typing import Dict, Set, Union
+
 from project.wfc.direction import Direction
+from project.wfc.pattern import MetaPattern
 
 
+@dataclass
 class NeighborRuleSet:
-    def __init__(
-        self, allowed_up=None, allowed_down=None, allowed_left=None, allowed_right=None
-    ):
-        self.allowed_neighbors = {
-            Direction.UP: allowed_up or set(),
-            Direction.DOWN: allowed_down or set(),
-            Direction.LEFT: allowed_left or set(),
-            Direction.RIGHT: allowed_right or set(),
+    allowed_up: Set[MetaPattern] = field(default_factory=set)
+    allowed_down: Set[MetaPattern] = field(default_factory=set)
+    allowed_left: Set[MetaPattern] = field(default_factory=set)
+    allowed_right: Set[MetaPattern] = field(default_factory=set)
+
+    def __post_init__(self):
+        self.allowed_neighbors: Dict[Direction, Set[MetaPattern]] = {
+            Direction.UP: self.allowed_up,
+            Direction.RIGHT: self.allowed_right,
+            Direction.DOWN: self.allowed_down,
+            Direction.LEFT: self.allowed_left,
         }
 
-    def get_allowed_neighbors(self, direction=None):
-        if direction == None:
-            return (
-                self.allowed_neighbors[Direction.UP],
-                self.allowed_neighbors[Direction.RIGHT],
-                self.allowed_neighbors[Direction.DOWN],
-                self.allowed_neighbors[Direction.LEFT],
-            )
-        return self.allowed_neighbors[direction]
+    def get_allowed_neighbors(
+        self, direction: Union[Direction, None] = None
+    ) -> Union[Set[MetaPattern], Dict[Direction, Set[MetaPattern]]]:
+        """Returns allowed neighbors for a given direction or all directions if none specified."""
+        if direction is None:
+            return self.allowed_neighbors.values()
+        return self.allowed_neighbors.get(direction, set())
