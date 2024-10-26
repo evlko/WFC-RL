@@ -15,7 +15,7 @@ class Judge(ABC):
 class RandomJudge(Judge):
     @staticmethod
     def select(objects: List[WeightedObject], seed: int = None) -> WeightedObject:
-        return Utils.weighted_choice(objects=objects)
+        return Utils.weighted_choice(objects=objects, seed=seed)
 
 
 class GreedyJudge(Judge):
