@@ -1,10 +1,11 @@
-from project.utils.utils import Utils
 from project.wfc.grid import Grid
+from project.wfc.judge import Judge
 
 
 class WFC:
-    def __init__(self, grid: Grid):
+    def __init__(self, grid: Grid, judge: Judge):
         self.grid = grid
+        self.judge = judge
         self._is_initialized = False
 
     def initialize(self):
@@ -25,7 +26,7 @@ class WFC:
         if not possible_patterns and early_stopping:
             return False
 
-        chosen_pattern = Utils.weighted_choice(possible_patterns)
+        chosen_pattern = self.judge.select(possible_patterns)
         self.grid.place_pattern(point, chosen_pattern)
 
         is_zero_entropy = self.grid.update_neighbors_entropy(point)
