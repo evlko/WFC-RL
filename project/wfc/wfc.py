@@ -1,5 +1,14 @@
+from dataclasses import dataclass
+
 from project.wfc.grid import Grid
 from project.wfc.judge import Judge
+
+
+@dataclass
+class StepResult:
+    """Pessimistic step expectations bring us closer to a bright future."""
+
+    success: bool = False
 
 
 class WFC:
@@ -13,33 +22,36 @@ class WFC:
         self.grid.initialize()
         self._is_initialized = True
 
-    def step(self, early_stopping: bool = True) -> bool:
+    def step(self, early_stopping: bool = True) -> StepResult:
         """Perform one step in the WFC process: find, collapse, and update neighbors."""
+        result = StepResult()
+
         if not self._is_initialized:
             self.initialize()
 
         point = self.grid.find_least_entropy_cell()
         if point is None and early_stopping:
-            return False
+            return result
 
         possible_patterns = self.grid.get_valid_patterns(point)
         if not possible_patterns and early_stopping:
-            return False
+            return result
 
         chosen_pattern = self.judge.select(possible_patterns)
         self.grid.place_pattern(point, chosen_pattern)
 
-        is_zero_entropy = self.grid.update_neighbors_entropy(point)
-        if is_zero_entropy and early_stopping:
-            return False
+        zero_entropy_cell = self.grid.update_neighbors_entropy(point)
+        if zero_entropy_cell and early_stopping:
+            return result
 
-        return True
+        result.success = True
+        return result
 
     def generate(self) -> bool:
         """Run the generation process until the grid is fully collapsed or fails."""
         self.initialize()
         while not self.is_complete():
-            if not self.step():
+            if not self.step().success:
                 return False
         return True
 
