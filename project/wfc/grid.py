@@ -32,14 +32,31 @@ class Grid:
         self.entropy = np.full((self.height, self.width), len(self.patterns))
 
     def get_patterns_around_point(
-        self, p: Point, view: Rect = Rect(width=3, height=3)
+        self, p: Point, view: Rect = Rect(width=3, height=3), is_extended: bool = True
     ) -> List[Optional[MetaPattern]]:
         """Get patterns within a rectangular region around a specified point (x, y)."""
-        x_min = max(0, p.x - view.height // 2)
-        x_max = min(self.height, p.x + view.height // 2 + 1)
-        y_min = max(0, p.y - view.width // 2)
-        y_max = min(self.width, p.y + view.width // 2 + 1)
+        half_width, half_height = view.width // 2, view.height // 2
 
+        if is_extended:
+            proxy_grid = np.full(
+                (self.height + 2 * half_height, self.width + 2 * half_width),
+                None,
+                dtype=object,
+            )
+            proxy_grid[
+                half_height : half_height + self.height,
+                half_width : half_width + self.width,
+            ] = self.grid
+            x_min, y_min = (
+                p.x + half_width - half_height,
+                p.y + half_width - half_height,
+            )
+            return proxy_grid[y_min : y_min + view.width, x_min : x_min + view.height]
+
+        x_min, x_max = max(0, p.x - half_height), min(
+            self.height, p.x + half_height + 1
+        )
+        y_min, y_max = max(0, p.y - half_width), min(self.width, p.y + half_width + 1)
         return self.grid[y_min:y_max, x_min:x_max]
 
     def find_least_entropy_cell(self) -> Point | None:
