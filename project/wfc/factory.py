@@ -23,13 +23,15 @@ class Factory:
                 name=pattern_data["name"],
                 tags=set(pattern_data["tags"]),
                 weight=pattern_data["weight"],
-                patterns=[
-                    Pattern(
-                        image_path=f"{self.images_folder}{pattern["image_path"]}",
-                        weight=pattern["weight"],
-                    )
-                    for pattern in pattern_data.get("patterns", [])
-                ],
+                patterns=tuple(
+                    [
+                        Pattern(
+                            image_path=f"{self.images_folder}{pattern["image_path"]}",
+                            weight=pattern["weight"],
+                        )
+                        for pattern in pattern_data.get("patterns", [])
+                    ]
+                ),
             )
             for pattern_data in self.data
         ]

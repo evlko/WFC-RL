@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
 
-@dataclass(unsafe_hash=True)
+@dataclass()
 class WeightedObject:
     weight: float = field(repr=False)
