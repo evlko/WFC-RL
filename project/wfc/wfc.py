@@ -1,8 +1,15 @@
 from dataclasses import dataclass
+from enum import Enum, auto
 
 from project.wfc.grid import Grid, Point
 from project.wfc.judge import Judge
 from project.wfc.pattern import MetaPattern
+
+
+class FailReason(Enum):
+    COLLAPSED = auto()
+    ZERO_CHOICE = auto()
+    ZERO_ENTROPY = auto()
 
 
 @dataclass
@@ -13,6 +20,7 @@ class StepResult:
     chosen_point: Point | None = None
     chosen_pattern: MetaPattern | None = None
     failed_point: Point | None = None
+    fail_reason: FailReason | None = None
 
 
 class WFC:
@@ -36,12 +44,13 @@ class WFC:
         point = self.grid.find_least_entropy_cell()
         result.chosen_point = point
         if point is None and early_stopping:
-            result.failed_point = point
+            result.fail_reason = FailReason.COLLAPSED
             return result
 
         # find possible patterns and fail if None
         possible_patterns = self.grid.get_valid_patterns(p=point)
         if not possible_patterns and early_stopping:
+            result.fail_reason = FailReason.ZERO_CHOICE
             result.failed_point = point
             return result
 
@@ -53,6 +62,7 @@ class WFC:
         # find a cell with zero entropy and fail if one such exists
         zero_entropy_cell = self.grid.update_neighbors_entropy(p=point)
         if zero_entropy_cell and early_stopping:
+            result.fail_reason = FailReason.ZERO_ENTROPY
             result.failed_point = zero_entropy_cell
             return result
 
