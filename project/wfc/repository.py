@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Union
 
+from project.logger import logger
 from project.wfc.direction import Direction, reverse_directions
 from project.wfc.pattern import MetaPattern
 from project.wfc.special_rules import SpecialRule
@@ -79,6 +80,9 @@ class Repository:
         for pattern in self.patterns:
             if tag in pattern.tags:
                 result.append(pattern)
+
+        if len(result) == 0:
+            logger.warning(f"Zero patterns with tag: {tag}")
 
         return result
 
