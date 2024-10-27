@@ -858,11 +858,11 @@
           30
         ],
         "left": [
-          "Ground 2",
+          27,
           26
         ],
         "right": [
-          "Ground 2",
+          27,
           28
         ]
       },
@@ -926,7 +926,6 @@
           "Wall Top"
         ],
         "left": [
-          "Ground 2",
           "Right Ground 2",
           "Ground",
           "Wall Ground"
