@@ -88,7 +88,7 @@ class Repository:
             return self.get_patterns_by_special_rule(rule=rule)
         return self.get_patterns_by_tag(tag=rule)
 
-    def get_pattern_by_uid(self, uid: List[int]) -> MetaPattern:
+    def get_pattern_by_uid(self, uid: int) -> MetaPattern | None:
         """Find one pattern with uid"""
         result = None
 
