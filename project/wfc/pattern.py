@@ -15,5 +15,5 @@ class MetaPattern(WeightedObject):
     uid: int
     name: str
     tags: Set[str] = field(compare=False, hash=False)
-    rules: Union["NeighborRuleSet", None] = field(default=None, repr=False)  # type: ignore
+    rules: Union["NeighborRuleSet", None] = field(default=None, repr=False, hash=False)  # type: ignore
     patterns: List[Pattern] = field(default_factory=list, repr=False, hash=False)
