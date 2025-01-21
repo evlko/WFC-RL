@@ -14,6 +14,7 @@ class Pattern(WeightedObject):
 class MetaPattern(WeightedObject):
     uid: int
     name: str
+    is_walkable: int
     tags: Set[str] = field(compare=False, hash=False)
     rules: Union["NeighborRuleSet", None] = field(default=None, repr=False, hash=False)  # type: ignore
     patterns: Tuple[Pattern] = field(default_factory=list, repr=False)

@@ -7,6 +7,7 @@
       "tags": [
         "Ground"
       ],
+      "is_walkable": 1,
       "weight": 7,
       "rules": {
         "up": [
@@ -63,6 +64,7 @@
       "tags": [
         "Wall"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -96,6 +98,7 @@
         "Wall",
         "Wall Center"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -154,6 +157,7 @@
       "tags": [
         "Wall"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -187,6 +191,7 @@
         "Wall Bottom Top",
         "Wall Left"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -223,6 +228,7 @@
       "tags": [
         "Wall Bottom Top"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -259,6 +265,7 @@
         "Wall Bottom Top",
         "Wall Right"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -294,6 +301,7 @@
       "tags": [
         "Wall Left"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -333,6 +341,7 @@
       "tags": [
         "Wall Right"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -372,6 +381,7 @@
       "tags": [
         "Wall Ground"
       ],
+      "is_walkable": 1,
       "weight": 1,
       "rules": {
         "up": [
@@ -418,6 +428,7 @@
       "tags": [
         "Wall Inside"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -467,6 +478,7 @@
         "Wall Top",
         "Wall Left"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -503,6 +515,7 @@
       "tags": [
         "Wall Top"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -541,6 +554,7 @@
         "Wall Top",
         "Wall Right"
       ],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -574,6 +588,7 @@
       "id": 19,
       "name": "Wall Bottom Right Corner",
       "tags": [],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -608,6 +623,7 @@
       "id": 20,
       "name": "Wall Bottom Left Corner",
       "tags": [],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -642,6 +658,7 @@
       "id": 21,
       "name": "Wall Top Left Corner",
       "tags": [],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -676,6 +693,7 @@
       "id": 22,
       "name": "Wall Top Right Corner",
       "tags": [],
+      "is_walkable": 0,
       "weight": 1,
       "rules": {
         "up": [
@@ -713,6 +731,7 @@
         "Top Ground 2",
         "Left Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -747,6 +766,7 @@
       "tags": [
         "Top Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -781,6 +801,7 @@
         "Top Ground 2",
         "Right Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -816,6 +837,7 @@
       "tags": [
         "Left Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -847,6 +869,7 @@
       "id": 27,
       "name": "Ground 2",
       "tags": [],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -879,6 +902,7 @@
       "tags": [
         "Right Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -914,6 +938,7 @@
         "Bottom Ground 2",
         "Left Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -948,6 +973,7 @@
       "tags": [
         "Bottom Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
@@ -982,6 +1008,7 @@
         "Bottom Ground 2",
         "Right Ground 2"
       ],
+      "is_walkable": 1,
       "weight": 0.1,
       "rules": {
         "up": [
