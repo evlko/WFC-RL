@@ -6,6 +6,7 @@ import numpy as np
 
 from project.wfc.direction import Direction
 from project.wfc.pattern import MetaPattern
+from project.wfc.repository import Repository
 
 
 @dataclass
@@ -138,7 +139,7 @@ class Grid:
 
         properties = np.array(
             [
-                [property_func(pattern) if pattern else "None" for pattern in row]
+                [property_func(pattern) if pattern else -1 for pattern in row]
                 for row in self.grid
             ]
         )
@@ -147,8 +148,20 @@ class Grid:
             for row in properties:
                 f.write(",".join(map(str, row)) + "\n")
 
-    def deserialize(self, path: str, name: str) -> None:
-        pass
+    def deserialize(self, repository: Repository, path: str, name: str) -> None:
+        """
+        Deserialize a file to reconstruct the grid.
+        NB: works by uid.
+        """
+        grid = []
+        with open(f"{path}{name}.dat", "r") as f:
+            for line in f:
+                row = [
+                    repository.get_pattern_by_uid(int(value)) if value != -1 else None
+                    for value in line.strip().split(",")
+                ]
+                grid.append(row)
+        self.grid = np.array(grid)
 
     def __str__(self) -> str:
         """Custom string representation of the grid showing uids or 'None'."""
