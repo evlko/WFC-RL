@@ -21,6 +21,7 @@ class Factory:
             MetaPattern(
                 uid=pattern_data["id"],
                 name=pattern_data["name"],
+                is_walkable=pattern_data["is_walkable"],
                 tags=set(pattern_data["tags"]),
                 weight=pattern_data["weight"],
                 patterns=tuple(
@@ -35,7 +36,6 @@ class Factory:
             )
             for pattern_data in self.data
         ]
-
         repository.register_patterns(meta_patterns)
 
         for pattern in meta_patterns:
