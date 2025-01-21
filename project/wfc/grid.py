@@ -1,3 +1,4 @@
+import uuid
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -97,7 +98,9 @@ class Grid:
                 )
                 possible_patterns = possible_patterns.intersection(allowed_patterns)
 
-        return list(possible_patterns)
+        possible_patterns = list(possible_patterns)
+        possible_patterns = sorted(possible_patterns, key=lambda x: x.uid)
+        return possible_patterns
 
     def place_pattern(self, p: Point, pattern: MetaPattern) -> None:
         """Place a pattern in the grid at the specified position."""
@@ -120,13 +123,29 @@ class Grid:
         """Check if the entire grid has been filled."""
         return np.all(self.grid != None)
 
+    def serialize(self, path: str, name: str | None = None, property_func: callable = lambda pattern: pattern.uid) -> None:
+        """
+        Serialize the grid to a file, saving a specific property of each pattern.
+        NB: serialization with aim to further deserialization can be done only with uid.
+        """
+        if name is None:
+            name = str(uuid.uuid4())
+
+        properties = np.array([
+            [property_func(pattern) if pattern else "None" for pattern in row]
+            for row in self.grid
+        ])
+
+        with open(f"{path}{name}.dat", "w") as f:
+            for row in properties:
+                f.write(",".join(map(str, row)) + "\n")
+    
+    def deserialize(self, path: str, name: str) -> None:
+        pass
+
     def __str__(self) -> str:
         """Custom string representation of the grid showing uids or 'None'."""
-        grid_str = ""
-        for row in self.grid:
-            row_str = []
-            for cell in row:
-                cell_str = (lambda c: f"{c.uid:02}" if c else "None")(cell)
-                row_str.append(cell_str)
-            grid_str += " | ".join(row_str) + "\n"
-        return grid_str
+        return "\n".join(
+            " | ".join(f"{cell.uid:02}" if cell else "None" for cell in row)
+            for row in self.grid
+        )
