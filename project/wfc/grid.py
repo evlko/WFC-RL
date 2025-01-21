@@ -123,7 +123,12 @@ class Grid:
         """Check if the entire grid has been filled."""
         return np.all(self.grid != None)
 
-    def serialize(self, path: str, name: str | None = None, property_func: callable = lambda pattern: pattern.uid) -> None:
+    def serialize(
+        self,
+        path: str,
+        name: str | None = None,
+        property_func: callable = lambda pattern: pattern.uid,
+    ) -> None:
         """
         Serialize the grid to a file, saving a specific property of each pattern.
         NB: serialization with aim to further deserialization can be done only with uid.
@@ -131,15 +136,17 @@ class Grid:
         if name is None:
             name = str(uuid.uuid4())
 
-        properties = np.array([
-            [property_func(pattern) if pattern else "None" for pattern in row]
-            for row in self.grid
-        ])
+        properties = np.array(
+            [
+                [property_func(pattern) if pattern else "None" for pattern in row]
+                for row in self.grid
+            ]
+        )
 
         with open(f"{path}{name}.dat", "w") as f:
             for row in properties:
                 f.write(",".join(map(str, row)) + "\n")
-    
+
     def deserialize(self, path: str, name: str) -> None:
         pass
 
