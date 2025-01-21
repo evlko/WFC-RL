@@ -7,25 +7,31 @@ from project.wfc.wobj import WeightedObject
 
 
 class Judge(ABC):
-    @staticmethod
+    def __init__(self, seed: int):
+        self.seed = seed
+
     @abstractmethod
     def select(
-        objects: List[WeightedObject], grid: Grid | None = None, seed: int = None
+        self, objects: List[WeightedObject], grid: Grid | None = None
     ) -> WeightedObject:
         pass
 
 
 class RandomJudge(Judge):
-    @staticmethod
+    def __init__(self, seed: int):
+        super().__init__(seed)
+
     def select(
-        objects: List[WeightedObject], grid: Grid | None = None, seed: int = None
+        self, objects: List[WeightedObject], grid: Grid | None = None
     ) -> WeightedObject:
-        return Utils.weighted_choice(objects=objects, seed=seed)
+        return Utils.weighted_choice(objects=objects, seed=self.seed)
 
 
 class GreedyJudge(Judge):
-    @staticmethod
+    def __init__(self, seed: int):
+        super().__init__(seed)
+
     def select(
-        objects: List[WeightedObject], grid: Grid | None = None, seed: int = None
+        self, objects: List[WeightedObject], grid: Grid | None = None
     ) -> WeightedObject:
         return max(objects, key=lambda obj: obj.weight)
