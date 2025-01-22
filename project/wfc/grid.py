@@ -178,6 +178,6 @@ class Grid:
     def __str__(self) -> str:
         """Custom string representation of the grid showing uids or 'None'."""
         return "\n".join(
-            " | ".join(f"{cell.uid:02}" if cell else "None" for cell in row)
+            " | ".join(f"{cell.uid:03}" if cell else "-01" for cell in row)
             for row in self.grid
         )
