@@ -22,7 +22,9 @@ class Rect:
 
 
 class Grid:
-    def __init__(self, rect: Rect, patterns: List[MetaPattern]):
+    def __init__(
+        self, patterns: List[MetaPattern], rect: Rect = Rect(width=3, height=3)
+    ):
         self.width = rect.width
         self.height = rect.height
         self.patterns = patterns
@@ -154,7 +156,7 @@ class Grid:
         NB: works by uid.
         """
         grid = []
-        with open(f"{path}{name}.dat", "r") as f:
+        with open(f"{path}/{name}", "r") as f:
             for line in f:
                 row = [
                     repository.get_pattern_by_uid(int(value)) if value != -1 else None
@@ -162,6 +164,8 @@ class Grid:
                 ]
                 grid.append(row)
         self.grid = np.array(grid)
+        self.width = len(grid[0])
+        self.height = len(grid)
 
     def __str__(self) -> str:
         """Custom string representation of the grid showing uids or 'None'."""
