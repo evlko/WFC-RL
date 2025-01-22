@@ -1,3 +1,4 @@
+import base64
 from typing import List
 
 import numpy as np
@@ -17,3 +18,7 @@ class Utils:
         probabilities = weights / np.sum(weights)
 
         return random_gen.choice(objects, p=probabilities)
+
+    @staticmethod
+    def encode_np_array(arr: np.ndarray) -> str:
+        return base64.b64encode(arr.tobytes()).decode("utf-8")

@@ -7,6 +7,7 @@ from typing import List, Tuple
 import numpy as np
 
 from project.machine_learning.model import Model
+from project.utils.utils import Utils
 from project.wfc.grid import Grid, Point, Rect
 from project.wfc.judge import Judge
 from project.wfc.repository import Repository
@@ -36,9 +37,9 @@ class ModelMC(Model, Judge):
                     )
                     self.generate_paths(patterns)
 
-    def select(self, state):
-        serialized_state = state.tostring()
-        self.graph[serialized_state]
+    def select(self, state: np.ndarray):
+        serialized_state = Utils.encode_np_array(state)
+        return self.graph[serialized_state]
 
     def generate_paths(self, state: np.ndarray) -> None:
         view_indices = self.view.indices
@@ -51,10 +52,10 @@ class ModelMC(Model, Judge):
 
                 for indices_to_hide in hidden_combinations:
                     state_to = self._apply_hiding(state, indices_to_hide)
-                    serialized_state_to = state_to.tostring()
+                    serialized_state_to = Utils.encode_np_array(state_to)
 
                     state_from = self._apply_hiding(state_to, [(x, y)])
-                    serialized_state_from = state_from.tostring()
+                    serialized_state_from = Utils.encode_np_array(state_from)
 
                     self.graph[serialized_state_from][serialized_state_to] += 1
 
