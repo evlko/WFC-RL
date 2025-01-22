@@ -6,21 +6,30 @@ from project.wfc.judge import Judge
 from project.wfc.pattern import MetaPattern
 
 
-class FailReason(Enum):
-    COLLAPSED = auto()
+class Outcome(Enum):
+    """Base class for all outcomes."""
+
+    pass
+
+
+class FailOutcome(Outcome):
     ZERO_CHOICE = auto()
     ZERO_ENTROPY = auto()
 
 
+class SuccessOutcome(Outcome):
+    COLLAPSED = auto()
+
+
 @dataclass
 class StepResult:
-    """Pessimistic step expectations bring us closer to a bright future."""
+    """Cautious planning today paves the way for a brighter tomorrow."""
 
     success: bool = False
     chosen_point: Point | None = None
     chosen_pattern: MetaPattern | None = None
+    outcome: Outcome | None = None
     failed_point: Point | None = None
-    fail_reason: FailReason | None = None
 
 
 class WFC:
@@ -44,13 +53,13 @@ class WFC:
         point = self.grid.find_least_entropy_cell()
         result.chosen_point = point
         if point is None and early_stopping:
-            result.fail_reason = FailReason.COLLAPSED
+            result.fail_reason = SuccessOutcome.COLLAPSED
             return result
 
         # find possible patterns and fail if None
         possible_patterns = self.grid.get_valid_patterns(p=point)
         if not possible_patterns and early_stopping:
-            result.fail_reason = FailReason.ZERO_CHOICE
+            result.fail_reason = FailOutcome.ZERO_CHOICE
             result.failed_point = point
             return result
 
@@ -62,7 +71,7 @@ class WFC:
         # find a cell with zero entropy and fail if one such exists
         zero_entropy_cell = self.grid.update_neighbors_entropy(p=point)
         if zero_entropy_cell and early_stopping:
-            result.fail_reason = FailReason.ZERO_ENTROPY
+            result.fail_reason = FailOutcome.ZERO_ENTROPY
             result.failed_point = zero_entropy_cell
             return result
 
