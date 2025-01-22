@@ -2,12 +2,12 @@ from abc import ABC, abstractmethod
 from enum import Enum, auto
 
 
-class AgentMode(Enum):
+class ModelMode(Enum):
     TRAINIG = auto()
     EVALUATION = auto()
 
 
-class Agent(ABC):
+class Model(ABC):
     @abstractmethod
     def save_weights(filename: str):
         pass
