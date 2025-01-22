@@ -1,6 +1,6 @@
 import uuid
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import numpy as np
 
@@ -19,6 +19,14 @@ class Point:
 class Rect:
     width: int
     height: int
+
+    @property
+    def area(self) -> int:
+        return self.width * self.height
+
+    @property
+    def indices(self) -> List[Tuple[int, int]]:
+        return [(i, j) for i in range(self.height) for j in range(self.width)]
 
 
 class Grid:
