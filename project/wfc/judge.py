@@ -7,7 +7,7 @@ from project.wfc.wobj import WeightedObject
 
 
 class Judge(ABC):
-    def __init__(self, seed: int):
+    def __init__(self, seed: int | None = None):
         self.seed = seed
 
     @abstractmethod
@@ -18,7 +18,7 @@ class Judge(ABC):
 
 
 class RandomJudge(Judge):
-    def __init__(self, seed: int):
+    def __init__(self, seed: int | None = None):
         super().__init__(seed)
 
     def select(
@@ -28,7 +28,7 @@ class RandomJudge(Judge):
 
 
 class GreedyJudge(Judge):
-    def __init__(self, seed: int):
+    def __init__(self, seed: int | None = None):
         super().__init__(seed)
 
     def select(
