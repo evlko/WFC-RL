@@ -64,12 +64,13 @@ class WFC:
             result.failed_point = point
             return result
 
-        view = self.grid.get_patterns_around_point(
+        state = self.grid.get_patterns_around_point(
             p=point, view=self.judge.view, is_extended=True
         ).copy()
+        state = self.grid.get_patterns_property(state)
 
         # get random pattern from judge and place it
-        chosen_pattern = self.judge.select(objects=possible_patterns, view=view)
+        chosen_pattern = self.judge.select(objects=possible_patterns, state=state)
         if chosen_pattern is None:
             result.outcome = FailOutcome.JUDGE_ERROR
             result.failed_point = point
