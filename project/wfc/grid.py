@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
+from project.config import HIDDEN_CELL
 from project.wfc.direction import Direction
 from project.wfc.pattern import MetaPattern
 from project.wfc.repository import Repository
@@ -46,6 +47,18 @@ class Grid:
         """Initialize or reset the grid with full entropy in all cells."""
         self.grid = np.full((self.height, self.width), None)
         self.entropy = np.full((self.height, self.width), len(self.patterns))
+
+    @staticmethod
+    def get_patterns_property(
+        patterns: np.ndarray, property_func: callable = lambda pattern: pattern.uid
+    ) -> np.ndarray:
+        properties = np.array(
+            [
+                [property_func(pattern) if pattern else HIDDEN_CELL for pattern in row]
+                for row in patterns
+            ]
+        )
+        return properties
 
     def get_patterns_around_point(
         self, p: Point, view: Rect = Rect(width=3, height=3), is_extended: bool = True
@@ -146,11 +159,8 @@ class Grid:
         if name is None:
             name = str(uuid.uuid4())
 
-        properties = np.array(
-            [
-                [property_func(pattern) if pattern else -1 for pattern in row]
-                for row in self.grid
-            ]
+        properties = self.get_patterns_property(
+            property_func=property_func, patterns=self.grid
         )
 
         with open(f"{path}{name}.dat", "w") as f:
