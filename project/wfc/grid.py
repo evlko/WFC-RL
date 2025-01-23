@@ -59,11 +59,8 @@ class Grid:
                 half_height : half_height + self.height,
                 half_width : half_width + self.width,
             ] = self.grid
-            x_min, y_min = (
-                p.x + half_width - half_height,
-                p.y + half_width - half_height,
-            )
-            return proxy_grid[y_min : y_min + view.width, x_min : x_min + view.height]
+            x_max, y_max = p.x + view.height, p.y + view.width
+            return proxy_grid[p.x : x_max, p.y : y_max]
 
         x_min, x_max = max(0, p.x - half_height), min(
             self.height, p.x + half_height + 1
