@@ -63,7 +63,7 @@ class WFC:
             result.outcome = FailOutcome.ZERO_CHOICE
             result.failed_point = point
             return result
-        
+
         view = self.grid.get_patterns_around_point(
             p=point, view=self.judge.view, is_extended=True
         ).copy()
@@ -76,7 +76,7 @@ class WFC:
             return result
         result.chosen_pattern = chosen_pattern
         self.grid.place_pattern(p=point, pattern=chosen_pattern)
-   
+
         # find a cell with zero entropy and fail if one such exists
         zero_entropy_cell = self.grid.update_neighbors_entropy(p=point)
         if zero_entropy_cell and early_stopping:
