@@ -15,6 +15,7 @@ class Outcome(Enum):
 class FailOutcome(Outcome):
     ZERO_CHOICE = auto()
     ZERO_ENTROPY = auto()
+    JUDGE_ERROR = auto()
 
 
 class SuccessOutcome(Outcome):
@@ -59,19 +60,27 @@ class WFC:
         # find possible patterns and fail if None
         possible_patterns = self.grid.get_valid_patterns(p=point)
         if not possible_patterns and early_stopping:
-            result.fail_reason = FailOutcome.ZERO_CHOICE
+            result.outcome = FailOutcome.ZERO_CHOICE
             result.failed_point = point
             return result
+        
+        view = self.grid.get_patterns_around_point(
+            p=point, view=self.judge.view, is_extended=True
+        ).copy()
 
         # get random pattern from judge and place it
-        chosen_pattern = self.judge.select(objects=possible_patterns, grid=self.grid)
+        chosen_pattern = self.judge.select(objects=possible_patterns, view=view)
+        if chosen_pattern is None:
+            result.outcome = FailOutcome.JUDGE_ERROR
+            result.failed_point = point
+            return result
         result.chosen_pattern = chosen_pattern
         self.grid.place_pattern(p=point, pattern=chosen_pattern)
-
+   
         # find a cell with zero entropy and fail if one such exists
         zero_entropy_cell = self.grid.update_neighbors_entropy(p=point)
         if zero_entropy_cell and early_stopping:
-            result.fail_reason = FailOutcome.ZERO_ENTROPY
+            result.outcome = FailOutcome.ZERO_ENTROPY
             result.failed_point = zero_entropy_cell
             return result
 
