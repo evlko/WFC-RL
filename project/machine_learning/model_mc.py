@@ -1,11 +1,14 @@
 import json
 from collections import defaultdict
+from dataclasses import dataclass
 from itertools import combinations
 from pathlib import Path
 from typing import List, Tuple
 
 import numpy as np
+from tqdm import tqdm
 
+from project.config import HIDDEN_CELL, TARGET_CELL
 from project.machine_learning.model import Model
 from project.utils.utils import Utils
 from project.wfc.grid import Grid, Point, Rect
@@ -15,11 +18,16 @@ from project.wfc.repository import repository
 from project.wfc.wobj import WeightedObject
 
 
+@dataclass
+class State(WeightedObject):
+    state: str
+
+
 class ModelMC(Model, Judge):
-    def __init__(self, view: Rect = Rect(3, 3)):
-        super().__init__()
-        self.view = view
+    def __init__(self, seed: int | None = None, view: Rect = Rect(3, 3)):
+        super().__init__(view=view, seed=seed)
         self.graph = defaultdict(lambda: defaultdict(int))
+        self.used_keys = set()
 
     @staticmethod
     def _get_hidden_combinations(
@@ -35,7 +43,7 @@ class ModelMC(Model, Judge):
     def _apply_hiding(
         state: np.ndarray,
         indices_to_hide: List[Tuple[int, int]],
-        hide_code: int = -1,
+        hide_code: int = HIDDEN_CELL,
     ) -> np.ndarray:
         """Create a copy of the state with specified indices hidden."""
         modified_state = state.copy()
@@ -43,44 +51,44 @@ class ModelMC(Model, Judge):
             modified_state[hx][hy] = hide_code
         return modified_state
 
-    @staticmethod
-    def _get_uid_from_view(patterns: np.ndarray):
-        return np.array(
-            [[pattern.uid if pattern else -1 for pattern in row] for row in patterns]
-        )
+    def train(self, grids_path: str, portion: float = 1.0):
+        grid_files = list(Path(grids_path).glob("*.dat"))
+        files_count = int(len(grid_files) * portion)
+        grid_files = grid_files[:files_count]
 
-    def train(self, grids_path: str):
-        grid_files = Path(grids_path).glob("*.dat")
-
-        for file_path in grid_files:
+        for file_path in tqdm(grid_files):
             grid = Grid(patterns=repository.get_all_patterns())
             grid.deserialize(repository, str(file_path.parent), file_path.name)
-            for x in range(grid.width):
-                for y in range(grid.height):
+            for x in range(grid.height):
+                for y in range(grid.width):
                     point = Point(x, y)
-                    grid_slice = grid.get_patterns_around_point(p=point, view=self.view)
-                    patterns = self._get_uid_from_view(grid_slice)
-                    self.generate_paths(patterns)
+                    pattenrs = grid.get_patterns_around_point(p=point, view=self.view)
+                    pattenrs_uids = grid.get_patterns_property(pattenrs)
+                    self.generate_paths(pattenrs_uids)
 
     def select(
-        self, objects: List[WeightedObject] = None, view: Rect | None = None
-    ) -> MetaPattern:
-        state = self._get_uid_from_view(view)
+        self, objects: List[WeightedObject], state: np.ndarray
+    ) -> MetaPattern | None:
+        cx, cy = 1, 1
+        state = self._apply_hiding(state, [(cx, cy)], TARGET_CELL)
         serialized_state = Utils.encode_np_array(state)
-        transitions = self.graph[serialized_state]
+        self.used_keys.add(serialized_state)
 
-        serialized_states = list(transitions.keys())
-        weights = list(transitions.values())
+        if serialized_state not in self.graph:
+            return None
 
-        random_gen = np.random.RandomState()
-        probabilities = np.array(weights) / np.sum(weights)
-        selected_index = random_gen.choice(len(serialized_states), p=probabilities)
+        states = [
+            State(state=key, weight=value)
+            for key, value in self.graph[serialized_state].items()
+        ]
+
+        next_state = Utils.weighted_choice(states, self.seed)
 
         next_state = Utils.decode_np_array(
-            serialized_states[selected_index], shape=(self.view.width, self.view.height)
+            next_state.state, shape=(self.view.width, self.view.height)
         )
 
-        changed_cells = np.argwhere((state == 0) & (next_state != state))
+        changed_cells = np.argwhere((state == TARGET_CELL) & (next_state != state))
 
         if len(changed_cells) != 1:
             raise ValueError(
@@ -99,12 +107,11 @@ class ModelMC(Model, Judge):
                 hidden_combinations = self._get_hidden_combinations(
                     view_indices, (x, y), num_hidden
                 )
-
                 for indices_to_hide in hidden_combinations:
                     state_to = self._apply_hiding(state, indices_to_hide)
                     serialized_state_to = Utils.encode_np_array(state_to)
 
-                    state_from = self._apply_hiding(state_to, [(x, y)], 0)
+                    state_from = self._apply_hiding(state_to, [(x, y)], TARGET_CELL)
                     serialized_state_from = Utils.encode_np_array(state_from)
 
                     self.graph[serialized_state_from][serialized_state_to] += 1
