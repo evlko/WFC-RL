@@ -1,6 +1,6 @@
 import json
-from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, List, Set
+from dataclasses import dataclass, field
+from typing import Any, Dict, Set
 
 import networkx as nx
 
@@ -12,12 +12,6 @@ class Vertex:
     uid: int
     rect: Rect
     neighbors: Set[int] = field(default_factory=set)
-
-    def to_serializable(self) -> Dict[str, Any]:
-        data = asdict(self)
-        data.pop("rect")
-        data["neighbors"] = list(self.neighbors)
-        return data
 
 
 @dataclass
@@ -89,7 +83,7 @@ class Graph:
         return {
             "meta": meta,
             "vertices": {
-                uid: vertex.to_serializable() for uid, vertex in self.vertices.items()
+                uid: list(vertex.neighbors) for uid, vertex in self.vertices.items()
             },
         }
 
