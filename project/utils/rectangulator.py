@@ -11,6 +11,10 @@ class Rect:
     x2: int
     y2: int
 
+    @property
+    def area(self) -> int:
+        return (self.x2 - self.x1 + 1) * (self.y2 - self.y1 + 1)
+
     def touches(self, other) -> bool:
         """
         Check if this rectangle touches another rectangle (shares at least one edge).
