@@ -162,5 +162,8 @@ cython_debug/
 #.idea/
 
 .DS_Store
-/images/wfc
+/content/wfc
 /.vscode
+/data/grids
+/data/weights
+
