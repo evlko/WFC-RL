@@ -3,7 +3,7 @@ import glob
 from PIL import Image
 
 
-def create_gif(output_path: str, image_folder: str, duration: int = 100):
+def create_gif(output_path: str, image_folder: str, duration: int = 100) -> None:
     """Create a GIF from PNG images."""
     images = []
     for filename in sorted(glob.glob(f"{image_folder}/*.png")):
