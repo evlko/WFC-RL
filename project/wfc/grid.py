@@ -172,13 +172,13 @@ class Grid:
             for row in properties:
                 f.write(",".join(map(str, row)) + "\n")
 
-    def deserialize(self, repository: Repository, file_name: str) -> None:
+    def deserialize(self, repository: Repository, path: str) -> None:
         """
         Deserialize a file to reconstruct the grid.
         NB: works by uid.
         """
         grid = []
-        with open(file_name, "r") as f:
+        with open(path, "r") as f:
             for line in f:
                 row = [
                     repository.get_pattern_by_uid(int(value)) if value != -1 else None
