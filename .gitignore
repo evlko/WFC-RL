@@ -168,3 +168,4 @@ cython_debug/
 /data/weights
 
 /content/wfc_steps
+/data/graphs/wfc
