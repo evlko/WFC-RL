@@ -59,12 +59,11 @@ class ModelMC(Model, Judge):
         for file_path in tqdm(grid_files):
             grid = Grid(patterns=repository.get_all_patterns())
             grid.deserialize(repository, str(file_path.parent), file_path.name)
-            for x in range(grid.height):
-                for y in range(grid.width):
-                    point = Point(x, y)
-                    pattenrs = grid.get_patterns_around_point(p=point, view=self.view)
-                    pattenrs_uids = grid.get_patterns_property(pattenrs)
-                    self.generate_paths(pattenrs_uids)
+            for x, y, meta_pattern in grid.iterate_cells():
+                point = Point(x, y)
+                pattenrs = grid.get_patterns_around_point(p=point, view=self.view)
+                pattenrs_uids = grid.get_patterns_property(pattenrs)
+                self.generate_paths(pattenrs_uids)
 
     def select(
         self, objects: List[WeightedObject], state: np.ndarray
@@ -115,6 +114,9 @@ class ModelMC(Model, Judge):
                     serialized_state_from = Utils.encode_np_array(state_from)
 
                     self.graph[serialized_state_from][serialized_state_to] += 1
+
+    def compress() -> None:
+        pass
 
     def save_weights(self, filename: str) -> None:
         with open(f"{filename}.json", "w") as f:
