@@ -48,6 +48,9 @@ class GridRenderer(Renderer):
 
             if text_to_show == TextToShow.ENTROPY:
                 text = str(grid.entropy[x, y])
+                if text == "0":
+                    text_color = "white"
+                    background_color = "red"
             if meta_pattern and text_to_show == TextToShow.HEIGHT:
                 text = str(meta_pattern.is_walkable)
                 background_color = "white" if text == "1" else "black"
