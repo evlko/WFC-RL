@@ -1,5 +1,6 @@
 import os
 
+
 def setup_environment(expected_dir: str = "WFC-RI") -> None:
     """
     Ensures the working directory is set to the expected parent directory.
