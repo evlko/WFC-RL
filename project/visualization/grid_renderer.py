@@ -16,7 +16,7 @@ class GridRenderer(Renderer):
         show_borders: bool = False,
         seed: int | None = 42,
         show: bool = True,
-        filename: str | None = None,
+        save_path: str | None = None,
         show_entropy_on_empty: bool = True,
     ) -> None:
         """Draw the grid using images for the patterns."""
@@ -61,12 +61,12 @@ class GridRenderer(Renderer):
             wspace=0,
         )
 
+        if save_path:
+            plt.savefig(
+                save_path, bbox_inches="tight", pad_inches=0
+            )
         if show:
             plt.show()
-        if filename:
-            plt.savefig(
-                f"{config.IMAGES_PATH}{filename}.png", bbox_inches="tight", pad_inches=0
-            )
         plt.close()
 
 
