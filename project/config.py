@@ -1,5 +1,5 @@
-DATA_SOURCE = "data/patters/patterns_forest.json"
-IMAGES_PATH = "images/wfc/"
+DATA_SOURCE = "data/patterns/patterns_forest.json"
+IMAGES_PATH = "content/wfc/"
 GRIDS_FOLDER = "data/grids/"
 # Judge Encoding
 TARGET_CELL = 0
