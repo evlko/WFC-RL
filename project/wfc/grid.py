@@ -48,6 +48,11 @@ class Grid:
         self.grid = np.full((self.height, self.width), None)
         self.entropy = np.full((self.height, self.width), len(self.patterns))
 
+    def iterate_cells(self):
+        for x in range(self.height):
+            for y in range(self.width):
+                yield x, y, self.grid[x, y]
+
     @staticmethod
     def get_patterns_property(
         patterns: np.ndarray, property_func: callable = lambda pattern: pattern.uid
@@ -167,13 +172,13 @@ class Grid:
             for row in properties:
                 f.write(",".join(map(str, row)) + "\n")
 
-    def deserialize(self, repository: Repository, path: str, name: str) -> None:
+    def deserialize(self, repository: Repository, file_name: str) -> None:
         """
         Deserialize a file to reconstruct the grid.
         NB: works by uid.
         """
         grid = []
-        with open(f"{path}/{name}", "r") as f:
+        with open(file_name, "r") as f:
             for line in f:
                 row = [
                     repository.get_pattern_by_uid(int(value)) if value != -1 else None
