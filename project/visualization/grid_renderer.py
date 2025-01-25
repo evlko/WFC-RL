@@ -1,9 +1,17 @@
+from enum import Enum, auto
+
 import matplotlib.pyplot as plt
 
-from project import config
 from project.utils.utils import Utils
 from project.visualization.renderer import Renderer
-from project.wfc.grid import Grid, Point
+from project.wfc.grid import Grid
+from project.wfc.pattern import MetaPattern
+
+
+class TextToShow(Enum):
+    NONE = auto()
+    ENTROPY = auto()
+    HEIGHT = auto()
 
 
 class GridRenderer(Renderer):
@@ -17,7 +25,8 @@ class GridRenderer(Renderer):
         seed: int | None = 42,
         show: bool = True,
         save_path: str | None = None,
-        show_entropy_on_empty: bool = True,
+        text_to_show: TextToShow = TextToShow.NONE,
+        show_image: bool = True,
     ) -> None:
         """Draw the grid using images for the patterns."""
         fig, ax = plt.subplots(
@@ -29,28 +38,33 @@ class GridRenderer(Renderer):
         if title:
             fig.suptitle(title)
 
-        for x in range(grid.height):
-            for y in range(grid.width):
-                meta_pattern = grid.grid[x, y]
-                cell_entropy = None
-                if show_entropy_on_empty:
-                    cell_entropy = grid.entropy[x, y]
-                image = None
-                if meta_pattern:
-                    custom_seed = (lambda s: s + x * 100 + y + y**2 if s else None)(
-                        seed
-                    )
-                    pattern = Utils.weighted_choice(
-                        meta_pattern.patterns, seed=custom_seed
-                    )
-                    image = pattern.image_path
-                self.render_cell(
-                    image_path=image,
-                    text=cell_entropy,
-                    ax=ax,
-                    p=Point(x, y),
-                    axis=show_borders,
-                )
+        for x, y, meta_pattern in grid.iterate_cells():
+            cell_ax = ax[x, y]
+            text = None
+            image = None
+            background_color = None
+            text_color = "black"
+            meta_pattern: MetaPattern | None = grid.grid[x, y]
+
+            if text_to_show == TextToShow.ENTROPY:
+                text = str(grid.entropy[x, y])
+            if meta_pattern and text_to_show == TextToShow.HEIGHT:
+                text = str(meta_pattern.is_walkable)
+                background_color = "white" if text == "1" else "black"
+                text_color = "black" if text == "1" else "white"
+            if meta_pattern and show_image:
+                custom_seed = (lambda s: s + x * 100 + y + y**2 if s else None)(seed)
+                pattern = Utils.weighted_choice(meta_pattern.patterns, seed=custom_seed)
+                image = pattern.image_path
+
+            self.render_cell(
+                image_path=image,
+                text=text,
+                ax=cell_ax,
+                axis=show_borders,
+                text_color=text_color,
+                background_color=background_color,
+            )
 
         plt.subplots_adjust(
             left=self.offset,
@@ -62,9 +76,7 @@ class GridRenderer(Renderer):
         )
 
         if save_path:
-            plt.savefig(
-                save_path, bbox_inches="tight", pad_inches=0
-            )
+            plt.savefig(save_path, bbox_inches="tight", pad_inches=0)
         if show:
             plt.show()
         plt.close()
