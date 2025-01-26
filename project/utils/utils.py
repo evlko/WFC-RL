@@ -1,4 +1,5 @@
 import base64
+import zlib
 from typing import List, Tuple
 
 import numpy as np
@@ -21,11 +22,13 @@ class Utils:
 
     @staticmethod
     def encode_np_array(arr: np.ndarray) -> str:
-        return base64.b64encode(arr.tobytes()).decode("utf-8")
+        compressed_data = zlib.compress(arr.tobytes())
+        return base64.b64encode(compressed_data).decode("utf-8")
 
     @staticmethod
     def decode_np_array(
         encoded_str: str, shape: Tuple[int, ...], dtype: np.dtype = int
     ) -> np.ndarray:
-        byte_data = base64.b64decode(encoded_str)
+        compressed_data = base64.b64decode(encoded_str)
+        byte_data = zlib.decompress(compressed_data)
         return np.frombuffer(byte_data, dtype=dtype).reshape(shape)
