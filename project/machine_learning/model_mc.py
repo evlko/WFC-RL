@@ -30,16 +30,6 @@ class ModelMC(Model, Judge):
         self.used_keys = set()
 
     @staticmethod
-    def _get_hidden_combinations(
-        view_indices: List[Tuple[int, int]],
-        exclude: Tuple[int, int],
-        num_hidden: int,
-    ) -> combinations:
-        """Generate all combinations of indices to hide, excluding the specified position."""
-        available_indices = set(view_indices) - {exclude}
-        return combinations(available_indices, num_hidden)
-
-    @staticmethod
     def _apply_hiding(
         state: np.ndarray,
         indices_to_hide: List[Tuple[int, int]],
@@ -58,12 +48,14 @@ class ModelMC(Model, Judge):
 
         for file_path in tqdm(grid_files):
             grid = Grid(patterns=repository.get_all_patterns())
-            grid.deserialize(repository, str(file_path.parent), file_path.name)
+            grid.deserialize(repository, file_path)
             for x, y, meta_pattern in grid.iterate_cells():
                 point = Point(x, y)
-                pattenrs = grid.get_patterns_around_point(p=point, view=self.view)
-                pattenrs_uids = grid.get_patterns_property(pattenrs)
-                self.generate_paths(pattenrs_uids)
+                pattenrs = grid.get_patterns_around_point(
+                    p=point, view=self.view, is_extended=True
+                )
+                local_state = grid.get_patterns_property(pattenrs)
+                self.generate_paths_to_state(local_state)
 
     def select(
         self, objects: List[WeightedObject], state: np.ndarray
@@ -98,22 +90,26 @@ class ModelMC(Model, Judge):
         selected_pattern = repository.get_pattern_by_uid(selected_uid)
         return selected_pattern
 
-    def generate_paths(self, state: np.ndarray) -> None:
+    def generate_paths_to_state(self, state: np.ndarray) -> None:
         view_indices = self.view.indices
+        cx, cy = self.view.center
 
-        for x, y in view_indices:
-            for num_hidden in range(self.view.area):
-                hidden_combinations = self._get_hidden_combinations(
-                    view_indices, (x, y), num_hidden
-                )
-                for indices_to_hide in hidden_combinations:
-                    state_to = self._apply_hiding(state, indices_to_hide)
-                    serialized_state_to = Utils.encode_np_array(state_to)
+        default_hidden_idicies = {index for index in view_indices if state[index] == -1}
+        valid_indices_to_hide = [
+            index
+            for index in view_indices
+            if index != (cx, cy) and index not in default_hidden_idicies
+        ]
 
-                    state_from = self._apply_hiding(state_to, [(x, y)], TARGET_CELL)
-                    serialized_state_from = Utils.encode_np_array(state_from)
+        for num_hidden in range(len(valid_indices_to_hide) + 1):
+            for indices_to_hide in combinations(valid_indices_to_hide, num_hidden):
+                state_to = self._apply_hiding(state, indices_to_hide)
+                serialized_state_to = Utils.encode_np_array(state_to)
 
-                    self.graph[serialized_state_from][serialized_state_to] += 1
+                state_from = self._apply_hiding(state_to, [(cx, cy)], TARGET_CELL)
+                serialized_state_from = Utils.encode_np_array(state_from)
+
+                self.graph[serialized_state_from][serialized_state_to] += 1
 
     def compress() -> None:
         pass
