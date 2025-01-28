@@ -12,8 +12,16 @@ class Rect:
     y2: int
 
     @property
+    def width(self) -> int:
+        return self.x2 - self.x1 + 1
+
+    @property
+    def height(self) -> int:
+        return self.y2 - self.y1 + 1
+
+    @property
     def area(self) -> int:
-        return (self.x2 - self.x1 + 1) * (self.y2 - self.y1 + 1)
+        return self.width * self.height
 
     def touches(self, other) -> bool:
         """
