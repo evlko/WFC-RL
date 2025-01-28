@@ -13,10 +13,25 @@ class Vertex:
     rect: Rect
     neighbors: Set[int] = field(default_factory=set)
 
+    @property
+    def is_arena(self) -> bool:
+        """Area which is described by vertex can be arena or corridor."""
+        min_side, max_side = min(self.rect.height, self.rect.width), max(
+            self.rect.height, self.rect.width
+        )
+        q_max_side = max_side * 0.25
+        return max_side <= q_max_side + min_side
+
+    @property
+    def is_cover(self) -> bool:
+        """Check if area has only one edge and is kinda cover of this area"""
+        pass
+
 
 @dataclass
 class Graph:
     vertices: Dict[int, Vertex]
+    NOT_CONNECTED_GRARH_FEATURE = "Infinity"
 
     @staticmethod
     def create_nx_graph(vertices: Dict[int, Vertex]) -> nx.Graph:
@@ -51,9 +66,13 @@ class Graph:
             2,
         )
         clustering_coeff = round(nx.average_clustering(G), 2)
-        diameter = nx.diameter(G) if nx.is_connected(G) else "Infinity"
+        diameter = (
+            nx.diameter(G) if nx.is_connected(G) else self.NOT_CONNECTED_GRARH_FEATURE
+        )
         avg_path_length = (
-            nx.average_shortest_path_length(G) if nx.is_connected(G) else "Infinity"
+            nx.average_shortest_path_length(G)
+            if nx.is_connected(G)
+            else self.NOT_CONNECTED_GRARH_FEATURE
         )
         largest_component = max(len(c) for c in nx.connected_components(G))
         density = nx.density(G)
